@@ -1,9 +1,9 @@
 
 /**
- * Write a description of class Acceso here.
+ * Clase que representa accesos a un servidor con una fecha (yyyy-mm-dd) y hora(hh-mm).
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Didac Fernandez Fernandez
+ * @version 2018-02-23
  */
 public class Acceso
 {

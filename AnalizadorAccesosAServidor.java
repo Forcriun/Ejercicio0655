@@ -5,20 +5,21 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 /**
- * Write a description of class AnalizadorAccesoServidor here.
+ * Clase que representa objetos capaces de leer, analizar y procesar datos de registros de acceso a
+ * un servidor.
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Didac Fernandez Fernandez
+ * @version 2018-02-23
  */
 public class AnalizadorAccesosAServidor
-{
-    // instance variables - replace the example below with your own
-    private int x;
+{    
+    HashMap<Integer,ArrayList<Acceso>> mapaHoras;
 
     /**
      * Constructor de objetos de la clase AnalizadorAccesosAServidor
      */
-    public AnalizadorAccesosAServidor(){    
+    public AnalizadorAccesosAServidor(){
+        mapaHoras = new HashMap<>();
     }
 
     /**
@@ -27,8 +28,7 @@ public class AnalizadorAccesosAServidor
      * @param log El nombre del archivo
      */
     public void analizarArchivoDeLog(String log){
-        HashMap<Integer,ArrayList<Acceso>> mapaHoras = new HashMap<>();
-        ArrayList<Acceso> listaAccesos = new ArrayList<>();
+        mapaHoras.clear();  // vacia el mapa para poder almacenar los datos del siguiente archivo
 
         try {
             File archivo = new File(log);
@@ -41,6 +41,7 @@ public class AnalizadorAccesosAServidor
                             Integer.parseInt(datosAcceso[3]),Integer.parseInt(datosAcceso[4])));
                 }
                 else{
+                    ArrayList<Acceso> listaAccesos = new ArrayList<>();
                     mapaHoras.put(Integer.parseInt(datosAcceso[3]),listaAccesos);
                 }
             }
@@ -49,5 +50,31 @@ public class AnalizadorAccesosAServidor
         catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Metodo que devuelve y muestra por pantalla la hora a la que se producen mas accesos al
+     * servidor. En caso de empate devuelve la hora mas alta.
+     *
+     * @return    La hora con mas accesos. Si no hay datos en el registro devuelve -1
+     */
+    public int obtenerHoraMasAccesos()
+    {
+        int aDevolver = -1;
+        int totalAccesos = 0;
+
+        if(!mapaHoras.isEmpty()){
+            for(ArrayList<Acceso> listaAccesos : mapaHoras.values()){       // Recorre todos los valores del mapa, y al ser listas de accesos
+                if(listaAccesos.get(0).getHora() > aDevolver && listaAccesos.size() >= totalAccesos){   // puede acceder a las horas evitando utilizar un conjunto para almacenar las claves,
+                    totalAccesos = listaAccesos.size();     // el uso de un bucle para la busqueda de mayor numero de accesos
+                    aDevolver = listaAccesos.get(0).getHora();      // y otro para la hora mas alta con ese numero de accesos
+                }
+            }
+        }
+        else{
+            System.out.println("No existen datos de acceso al servidor");
+        }
+
+        return aDevolver;
     }
 }
