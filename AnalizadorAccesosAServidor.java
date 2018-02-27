@@ -69,7 +69,8 @@ public class AnalizadorAccesosAServidor
                     totalAccesos = listaAccesos.size();     // el uso de un bucle para la busqueda de mayor numero de accesos
                     aDevolver = listaAccesos.get(0).getHora();      // y otro para la hora mas alta con ese numero de accesos
                 }
-            }
+            }            
+            System.out.println("La hora con mas accesos al servidor es: " + aDevolver);
         }
         else{
             System.out.println("No existen datos de acceso al servidor");
